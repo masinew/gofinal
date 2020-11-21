@@ -65,13 +65,15 @@ func TestGetCustomerByID(t *testing.T) {
 }
 
 func TestUpdateCustomer(t *testing.T) {
+	id := seedCustomer(t).ID
 	c := Customer{
+		ID: id,
 		Name:   "nong",
 		Email:  "nong@imail.com",
 		Status: "inactive",
 	}
 	payload, _ := json.Marshal(c)
-	res := request(http.MethodPut, uri("customers", strconv.Itoa(seedCustomer(t).ID)), bytes.NewBuffer(payload))
+	res := request(http.MethodPut, uri("customers", strconv.Itoa(id)), bytes.NewBuffer(payload))
 	var info Customer
 	err := res.Decode(&info)
 
