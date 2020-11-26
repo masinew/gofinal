@@ -25,6 +25,6 @@ func main() {
 	r.GET("/customer/:id", customer.FindCustomerHandler)
 	r.POST("/customer", customer.CreateCustomerHandler)
 	r.PUT("/customer/:id", customer.UpdateCustomerHandler)
-	r.DELETE("/customer/:id")
+	r.DELETE("/customer/:id", customer.DeleteCustomerHandler)
 	r.Run(":2009")
 }

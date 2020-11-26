@@ -27,7 +27,16 @@ func FindCustomerHandler(c *gin.Context) {
 
 func CreateCustomerHandler(c *gin.Context) {
 	customer, err := canBindJson(c)
-	if err != nil {
+	if err != nil || !validateCustomer(c, *customer){
+		return
+	}
+
+	conn := database.Connection()
+	iErr := data.Insert(conn, customer)
+	if iErr != nil {
+		c.JSON(http.StatusInternalServerError, data.Message{
+			Message: "The system can not performs your action. Please contact admin.",
+		})
 		return
 	}
 
@@ -35,7 +44,48 @@ func CreateCustomerHandler(c *gin.Context) {
 }
 
 func UpdateCustomerHandler(c *gin.Context) {
+	_ = isMissingId(c)
+	id, err := canParsingId(c)
+	if err != nil {
+		return
+	}
 
+	customer, bErr := canBindJson(c)
+	if bErr != nil || !validateCustomer(c, *customer) {
+		return
+	}
+
+	conn := database.Connection()
+	uErr := data.Update(conn, id, customer)
+	if uErr != nil {
+		c.JSON(http.StatusInternalServerError, data.Message{
+			Message: "The system can not performs your action. Please contact admin.",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, customer)
+}
+
+func DeleteCustomerHandler(c *gin.Context) {
+	_ = isMissingId(c)
+	id, err := canParsingId(c)
+	if err != nil {
+		return
+	}
+
+	conn := database.Connection()
+	uErr := data.Delete(conn, id)
+	if uErr != nil {
+		c.JSON(http.StatusInternalServerError, data.Message{
+			Message: "The system can not performs your action. Please contact admin.",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, data.Message{
+		Message: "customer deleted",
+	})
 }
 
 func isMissingId(c *gin.Context) string {
@@ -76,3 +126,19 @@ func canBindJson(c *gin.Context) (*data.Customer, error) {
 
 	return customer, nil
 }
+
+func validateCustomer(c *gin.Context, customer data.Customer) bool {
+	var valid = true
+	if (customer.Name == "" && customer.Email == "") || customer.Status == "" {
+		valid = false
+	}
+
+	if !valid {
+		c.JSON(http.StatusBadRequest, data.Message{
+			Message: "request body is invalid",
+		})
+	}
+
+	return valid
+}
+
