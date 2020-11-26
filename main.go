@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/masinew/gofinal/customer"
 	db "github.com/masinew/gofinal/database"
 	"log"
 )
@@ -14,10 +15,11 @@ func main() {
 	}
 
 	r := gin.Default()
-	r.GET("/customer", handler)
+	r.GET("/customer", customer.FindAllCustomerHandler)
+	r.GET("/customer/:id", customer.FindCustomerHandler)
+	r.POST("/customer", customer.CreateCustomerHandler)
+	r.PUT("/customer/:id", customer.UpdateCustomerHandler)
+	r.DELETE("/customer/:id")
 	r.Run(":2009")
 }
 
-func handler(c *gin.Context) {
-
-}
