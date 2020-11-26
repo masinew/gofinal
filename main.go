@@ -21,10 +21,10 @@ func main() {
 	}
 
 	r := gin.Default()
-	r.GET("/customer", customer.FindAllCustomerHandler)
-	r.GET("/customer/:id", customer.FindCustomerHandler)
-	r.POST("/customer", customer.CreateCustomerHandler)
-	r.PUT("/customer/:id", customer.UpdateCustomerHandler)
-	r.DELETE("/customer/:id", customer.DeleteCustomerHandler)
+	r.GET("/customers", customer.FindAllCustomerHandler)
+	r.GET("/customers/:id", customer.FindCustomerHandler)
+	r.POST("/customers", customer.CreateCustomerHandler)
+	r.PUT("/customers/:id", customer.UpdateCustomerHandler)
+	r.DELETE("/customers/:id", customer.DeleteCustomerHandler)
 	r.Run(":2009")
 }

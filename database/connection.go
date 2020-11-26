@@ -3,11 +3,11 @@ package database
 import (
 	"database/sql"
 	_ "github.com/lib/pq"
+	"os"
 )
 
-const (
-	dbUrl = `postgres://tddwulka:UlftGmzu4h5oRstCi_pZhlcMXNB6EVye@rosie.db.elephantsql.com:5432/tddwulka`
-	//dbUrl = os.Getenv("DB_URL")
+var (
+	dbUrl = os.Getenv("DATABASE_URL")
 )
 
 var connection *sql.DB
