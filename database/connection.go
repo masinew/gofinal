@@ -23,6 +23,5 @@ func Open() (*sql.DB, error) {
 }
 
 func Connection() *sql.DB {
-
 	return connection
 }

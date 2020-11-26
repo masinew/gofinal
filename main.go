@@ -3,15 +3,21 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/masinew/gofinal/customer"
-	db "github.com/masinew/gofinal/database"
+	"github.com/masinew/gofinal/customer/data"
+	"github.com/masinew/gofinal/database"
 	"log"
 )
 
 func main() {
-	conn, err := db.Open()
+	conn, connErr := database.Open()
 	defer conn.Close()
+	if connErr != nil {
+		log.Fatalf("Database connection error: %s", connErr)
+	}
+
+	err := data.CreateTodosTable()
 	if err != nil {
-		log.Fatalf("Database Connection error: %s", err)
+		log.Fatalf("Customer table creation error: %s", err)
 	}
 
 	r := gin.Default()
@@ -22,4 +28,3 @@ func main() {
 	r.DELETE("/customer/:id")
 	r.Run(":2009")
 }
-
