@@ -7,19 +7,6 @@ import (
 	"strconv"
 )
 
-func isMissingId(c *gin.Context) string {
-	param := c.Param("id")
-	if param == "" {
-		c.JSON(http.StatusBadRequest, data.Message{
-			Message: "Missing id query param",
-		})
-
-		return ""
-	}
-
-	return param
-}
-
 func canParsingId(c *gin.Context) (int, error) {
 	param := c.Param("id")
 	id, err := strconv.Atoi(param)

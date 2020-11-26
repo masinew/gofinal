@@ -60,7 +60,6 @@ func CreateCustomerHandler(c *gin.Context) {
 }
 
 func UpdateCustomerHandler(c *gin.Context) {
-	_ = isMissingId(c)
 	id, err := canParsingId(c)
 	if err != nil {
 		return
@@ -85,7 +84,6 @@ func UpdateCustomerHandler(c *gin.Context) {
 }
 
 func DeleteCustomerHandler(c *gin.Context) {
-	_ = isMissingId(c)
 	id, err := canParsingId(c)
 	if err != nil {
 		return
